@@ -27,7 +27,7 @@ Use the reference.
 'titles' : 'Panama_Papers' -- this means we want information about the page called "Panama Papers". 
 'format' : 'json' -- get the response in json, we won't change this. 
 'rvlimit' : 1 -- get one revision
-'rvdir' : 'newer' -- this means get the oldest revision first. 
+'rvdir' : 'newer' -- this means get the oldest revision first. use 'older' to get the newest edit first.
 'continue' : '' -- we will cover this later!
 '''
 
@@ -60,5 +60,6 @@ revision = revisions[0]
 revid = revision['revid']
 revuser = revision['user']
 revdate = revision['timestamp']
+title = page['title']
 
-print('First edit to ' + page_title + ' was revision ID ' + str(revid) + ' by ' + revuser + ' on ' + revdate)
+print('First edit to ' + title + ' was revision ID ' + str(revid) + ' by ' + revuser + ' on ' + revdate)
