@@ -1,4 +1,4 @@
-# Copyright (C) 2015 Ben Lewis
+# Copyright (C) 2016 Ben Lewis, and Morten Wang
 # Licensed under the MIT license, see ../LICENSE
 
 import requests
@@ -6,9 +6,11 @@ import requests
 ENDPOINT = 'https://en.wikipedia.org/w/api.php'
 
 parameters = { 'action' : 'query',
-               'prop' : 'links',
-               'titles' : 'User:Zen-ben',
+               'prop' : 'revisions',
+               'titles' : 'Panama Papers',
                'format' : 'json',
+               'rvlimit' : 1,
+               'rvdir' : 'newer',
                'continue' : '' }
 
 wp_call = requests.get(ENDPOINT, params=parameters)
@@ -16,5 +18,5 @@ wp_call = requests.get(ENDPOINT, params=parameters)
 response = wp_call.json()
 
 for page in response['query']['pages']:
-    for link in response['query']['pages'][page]['links']:
-        print(link['title'])
+    for revision in response['query']['pages'][page]['revisions']:
+        print('First edit to ' + parameters['titles'] + ' was revision ID ' + str(revision['revid']) + ' by ' + revision['user'] + ' on ' + revision['timestamp'])
