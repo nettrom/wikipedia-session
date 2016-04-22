@@ -1,7 +1,7 @@
 # Copyright (C) 2016 Ben Lewis, and Morten Wang
 # Licensed under the MIT license, see ../LICENSE
 
-# Who made the most edits to the article?
+# What was the most edits per day in the first two weeks?
 
 import requests
 
@@ -20,7 +20,7 @@ parameters = { 'action' : 'query',
 num_revisions = 0
 
 done = False
-user_edits = {}
+day_edits = {}
 while not done:
     wp_call = requests.get(ENDPOINT, params=parameters)
     response = wp_call.json()
@@ -31,12 +31,12 @@ while not done:
         page = pages[page_id]
         revisions = page['revisions']
         for revision in revisions:
-            revuser = revision['user']
+            revday = revision['timestamp'][0:10]
             num_revisions += 1
-            if revuser in user_edits:
-                user_edits[revuser] += 1
+            if revday in day_edits:
+                day_edits[revday] += 1
             else:
-                user_edits[revuser] = 1
+                day_edits[revday] = 1
 
     print('Done one query, num revisions is now ' + str(num_revisions))
 
@@ -46,16 +46,16 @@ while not done:
     else:
         done = True
 
-top_editors = []
+top_day = []
 max_edits = 0
-for user in user_edits:
-    num_edits = user_edits[user]
+for revday in day_edits:
+    num_edits = day_edits[revday]
     if num_edits > max_edits:
         max_edits = num_edits
-        top_editors = [user]
+        top_day = [revday]
     elif num_edits == max_edits:
-        top_editors.append(user)
+        top_editors.append(revday)
     else:
         pass
 
-print(str(top_editors) + ' had the most edits with ' + str(max_edits))
+print(str(top_day) + ' had the most edits with ' + str(max_edits))
