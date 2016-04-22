@@ -13,7 +13,7 @@ parameters = { 'action' : 'query',
                'format' : 'json',
                'rvdir' : 'newer',
                'rvstart': '2016-04-03T17:59:05Z',
-               'rvend' : '2016-04-23T17:59:05Z',
+               'rvend' : '2016-04-17T17:59:05Z',
                'rvlimit' : 500,
                'continue' : '' }
 
