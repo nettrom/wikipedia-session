@@ -24,7 +24,7 @@ while not done:
 
     for page in response['query']['pages']:
         for revision in response['query']['pages'][page]['revisions']:
-            num_revisions += 1
+            num_revisions = num_revisions + 1
 
     print('Done one query, num revisions is now ' + str(num_revisions))
 

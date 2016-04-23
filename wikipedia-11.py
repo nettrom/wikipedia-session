@@ -32,9 +32,9 @@ while not done:
         revisions = page['revisions']
         for revision in revisions:
             revuser = revision['user']
-            num_revisions += 1
+            num_revisions = num_revisions + 1
             if revuser in user_edits:
-                user_edits[revuser] += 1
+                user_edits[revuser] = user_edits[revuser] + 1
             else:
                 user_edits[revuser] = 1
 

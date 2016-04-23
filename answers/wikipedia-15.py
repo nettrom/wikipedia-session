@@ -35,12 +35,12 @@ while not done:
             revday = revision['timestamp'][0:10]
             revhour = revision['timestamp'][0:13]
             user = revision['user']
-            num_revisions += 1
+            num_revisions = num_revisions + 1
             if revhour in hour_edits:
-                hour_edits[revhour] += 1
+                hour_edits[revhour] = hour_edits[revhour] + 1
                 user_edits = hour_user_edits[revhour]
                 if user in user_edits:
-                    user_edits[user] += 1
+                    user_edits[user] = 1 + user_edits[user]
                 else:
                     user_edits[user] = 1
                 hour_user_edits[revhour] = user_edits
