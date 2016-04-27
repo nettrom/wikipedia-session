@@ -1,38 +1,46 @@
 # Copyright (C) 2016 Ben Lewis, and Morten Wang
 # Licensed under the MIT license, see ../LICENSE
 
+# What was the most edits per day in the first two weeks?
+
 import requests
-from urllib.parse import quote
 
-# Notes:
-# 1: documentation https://wikimedia.org/api/rest_v1/?doc
-# 2: there is no view data for 20160403, bug?
+ENDPOINT = 'https://en.wikipedia.org/w/api.php'
 
-ENDPOINT = 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/'
+parameters = { 'action' : 'query',
+               'prop' : 'revisions',
+               'titles' : 'Panama_Papers',
+               'format' : 'json',
+               'rvdir' : 'newer',
+               'rvstart': '2016-04-03T17:59:05Z',
+               'rvend' : '2016-04-17T17:59:05Z',
+               'rvlimit' : 500,
+               'continue' : '' }
 
-wp_code = 'en.wikipedia'
-access = 'all-access'
-agents = 'all-agents'
-page_title = 'Panama Papers'
-period = 'daily'
-start_date = '20160404'
-end_date = '20160423'
+num_revisions = 0
 
-wp_call = requests.get(ENDPOINT + wp_code + '/' + access + '/' + agents + '/' + quote(page_title, safe='') + '/' + period + '/' + start_date + '/' + end_date)
-response = wp_call.json()
+done = False
+while not done:
+    wp_call = requests.get(ENDPOINT, params=parameters)
+    response = wp_call.json()
 
-max_days = []
-max_views = 0
-for item in response['items']:
-    views = item['views']
-    day = item['timestamp']
-    if views > max_views:
-        max_views = views
-        max_days = [day]
-    elif views == max_views:
-        max_days.append(day)
+    pages = response['query']['pages']
+    
+    for page_id in pages:
+        page = pages[page_id]
+        revisions = page['revisions']
+        for revision in revisions:
+            revday = revision['timestamp'][0:10]
+            num_revisions = num_revisions + 1
+
+    print('Done one query, num revisions is now ' + str(num_revisions))
+
+    if 'continue' in response:
+        parameters['continue'] = response['continue']['continue']
+        parameters['rvcontinue'] = response['continue']['rvcontinue']
     else:
-        pass
+        done = True
 
-print(page_title + ' had the most views on ' + str(max_days))
-print('with ' + str(max_views) + ' views')
+edits_per_day = num_revisions / 14.0
+        
+print('There were an average of ' + str(edits_per_day) + ' edits in the first two weeks')

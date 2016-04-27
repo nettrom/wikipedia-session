@@ -1,4 +1,4 @@
-# Copyright (C) 2016 Ben Lewis, and Morten Wang
+# Copyright (C) 2016 Ben Lewis, Morten Wang, and Nathan TeGrotenhuis
 # Licensed under the MIT license, see ../LICENSE
 
 # Question: When was the first edit to the panama papers wikipedia article?
